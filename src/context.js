@@ -1,4 +1,5 @@
 import React, { useState, useContext, createContext } from 'react';
+import sublinks from './data/navbarData';
 
 const AppContext = createContext();
 
@@ -6,6 +7,8 @@ const AppProvider = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [page, setPage] = useState({ page: '', links: [] });
+  const [location, setLocation] = useState({});
 
   const openSidebar = () => {
     setIsSidebarOpen(true);
@@ -40,6 +43,9 @@ const AppProvider = ({ children }) => {
         closeSidebar,
         openSubmenu,
         closeSubmenu,
+        isSubmenuOpen,
+        page,
+        location,
       }}
     >
       {children}

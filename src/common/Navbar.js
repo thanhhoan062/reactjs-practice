@@ -1,64 +1,69 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../images/logo.svg';
 import { FaBars } from 'react-icons/fa';
-import { links, social } from '../data/navbarData';
+import { sublinks, links, social } from '../data/navbarData';
 import './common.css';
+import { useGlobalContext } from '../context';
 
 const Navbar = () => {
-  const [showLinks, setShowLinks] = useState(false);
-  const linksContainerRef = useRef(null);
-  const linksRef = useRef(null);
-
-  const toggleLinks = () => {
-    setShowLinks(!showLinks);
-  };
-
-  useEffect(() => {
-    const linksHeight = linksRef.current.getBoundingClientRect().height;
-    if (showLinks) {
-      linksContainerRef.current.style.height = `${linksHeight}px`;
-    } else {
-      linksContainerRef.current.style.height = '0px';
-    }
-  }, [showLinks]);
+  const { openSidebar, openSubmenu, closeSubmenu } = useGlobalContext();
 
   const handleSubmenu = (e) => {
     if (!e.target.classList.contains('link-btn')) {
       closeSubmenu();
     }
   };
+  const displaySubmenu = (e) => {
+    const page = e.target.textContent;
+    const tempBtn = e.target.getBoundingClientRect();
+    const center = (tempBtn.left + tempBtn.right) / 2;
+    const bottom = tempBtn.bottom - 3;
+    openSubmenu(page, { center, bottom });
+  };
 
   return (
     <nav className="nav" onMouseOver={handleSubmenu}>
       <div className="nav-center">
         <div className="nav-header">
-          <img src={logo} className="logo" alt="logo" />
-          <button className="nav-toggle" onClick={toggleLinks}>
+          <img src={logo} className="nav-logo" alt="" />
+          <button className="nav-btn toggle-btn" onClick={openSidebar}>
             <FaBars />
           </button>
         </div>
-        <div className="links-container" ref={linksContainerRef}>
-          <ul className="links" ref={linksRef}>
-            {links.map((link) => {
-              const { id, url, text } = link;
-              return (
-                <li key={id}>
-                  <a href={url}>{text}</a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <ul className="social-icons">
-          {social.map((socialIcon) => {
-            const { id, url, icon } = socialIcon;
+        {/* <ul className="nav-links">
+          {sublinks.map((item, index) => {
+            const { links, page } = item;
             return (
-              <li key={id}>
-                <a href={url}>{icon}</a>
+              <li key={index}>
+                <button className="nav-link-btn" onMouseOver={displaySubmenu}>
+                  {page}
+                </button>
               </li>
             );
           })}
+        </ul> */}
+
+        <ul className="nav-links">
+          <li>
+            <button className="nav-link-btn" onMouseOver={displaySubmenu}>
+              products
+            </button>
+          </li>
+          <li>
+            <button className="nav-link-btn" onMouseOver={displaySubmenu}>
+              developers
+            </button>
+          </li>
+          <li>
+            <button className="nav-link-btn" onMouseOver={displaySubmenu}>
+              company
+            </button>
+          </li>
         </ul>
+        <div>
+          <button className="signin-btn">Log In</button>
+          <button className="signin-btn signup-btn">Sign Up</button>
+        </div>
       </div>
     </nav>
   );

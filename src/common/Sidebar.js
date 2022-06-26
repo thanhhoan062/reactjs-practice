@@ -13,7 +13,7 @@ const Sidebar = () => {
           <FaTimes />
         </button>
       </div>
-      <ul className="nav-links">
+      <ul className="side-links">
         {links.map((link) => {
           const { id, url, text, icon } = link;
           return (
@@ -26,7 +26,7 @@ const Sidebar = () => {
           );
         })}
       </ul>
-      <ul className="nav-social-icons">
+      <ul className="side-social-icons">
         {social.map((link) => {
           const { id, url, icon } = link;
           return (
